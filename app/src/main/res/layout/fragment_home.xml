@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_marginTop="60dp"
+        android:id="@+id/connectionStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="连接状态：正在检测..."
+        android:textSize="18sp"
+        android:background="@drawable/status_bg"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/locationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="位置：未获取"
+        android:textSize="16sp"
+        android:background="@drawable/status_bg"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/reportCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="上报成功：0 / 错误：0"
+        android:textSize="16sp"
+        android:background="@drawable/status_bg"
+        android:padding="12dp" />
+
+</LinearLayout>

@@ -1,0 +1,27 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <SwitchPreferenceCompat
+        app:key="enable_reporting"
+        app:title="启用位置上报"
+        app:summary="开启后将在后台持续上报位置"
+        app:defaultValue="false" />
+
+    <EditTextPreference
+        app:key="report_interval"
+        app:title="上报间隔（秒）"
+        app:summary="位置上报的时间间隔"
+        app:defaultValue="30"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        app:key="server_url"
+        app:title="服务器地址"
+        app:summary="例如：https://example.com"
+        app:defaultValue="https://yourlocation.sandrone.work/"
+        app:useSimpleSummaryProvider="true" />
+
+    <EditTextPreference
+        app:key="token"
+        app:title="身份令牌 (Token)"
+        app:summary="用于服务器身份验证"
+        app:useSimpleSummaryProvider="true" />
+</PreferenceScreen>
