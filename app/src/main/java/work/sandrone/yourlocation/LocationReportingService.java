@@ -231,40 +231,6 @@ public class LocationReportingService extends Service {
     }
 
 
-    private void handleLocationUpdate(Location loc) {
-        if (loc == null) {
-            Log.w(TAG, "Received null location");
-            return;
-        }
-
-        // 1. 更新当前定位字符串（保留6位小数，符合常见精度）
-        currentLocationStr = String.format("%.6f, %.6f", loc.getLongitude(), loc.getLatitude());
-        Log.d(TAG, "Location updated: " + currentLocationStr);
-
-        // 2. 立即保存状态（位置变更，即使未上报也应显示）
-        saveServiceState();
-
-        // 3. 异步上报（避免阻塞主线程，因为 onLocationChanged 在主线程回调）
-        scheduler.execute(() -> {
-            try {
-                SharedPreferences prefs = getSharedPreferences("app_settings", Context.MODE_PRIVATE);
-                boolean enabled = prefs.getBoolean("enable_reporting", false);
-                if (!enabled) {
-                    Log.d(TAG, "Reporting disabled during location update, skip upload");
-                    return;
-                }
-
-                sendPosition(prefs, loc);
-            } catch (Exception e) {
-                Log.e(TAG, "Error in async location upload", e);
-                errorCount++;
-                saveServiceState();
-            }
-        });
-    }
-
-
-
     // sendPing 方法
     private void sendPing(SharedPreferences prefs) {
         String baseUrl = prefs.getString("server_url", "").trim();
@@ -349,18 +315,14 @@ public class LocationReportingService extends Service {
     }
 
     private Notification createNotification(String content) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    "LOC_CHANNEL", "位置上报", NotificationManager.IMPORTANCE_LOW);
-            channel.setDescription("后台位置上报服务");
-            NotificationManager nm = getSystemService(NotificationManager.class);
-            nm.createNotificationChannel(channel);
-        }
+
         return new NotificationCompat.Builder(this, "LOC_CHANNEL")
-                .setContentTitle("位置上报服务")
+                .setContentTitle("📍 位置上报")
                 .setContentText(content)
-                .setSmallIcon(android.R.drawable.ic_menu_mylocation)
+                .setSmallIcon(android.R.drawable.ic_dialog_map) // ✅ 关键！
                 .setOngoing(true)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .build();
     }
 
